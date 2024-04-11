@@ -10,7 +10,6 @@ import lombok.Data;
 public class Users {
 
     @Id
-    @GeneratedValue // Not needed, will auto_increment
     private int idUser;
     private String first_name;
     private String last_name;
