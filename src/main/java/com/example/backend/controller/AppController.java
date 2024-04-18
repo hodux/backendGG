@@ -91,5 +91,11 @@ public class AppController {
         recetteRepository.save(recipe);
 
         return recipe;
-    }   
+    }
+
+    @GetMapping("/getrec/{recipe_ID}")
+    public Recipe getRecipeById(@PathVariable("recipe_ID") Integer recipe_ID) {
+        return recetteRepository.findById(recipe_ID).orElse(null);
+    }
+
 }
