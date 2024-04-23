@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3333")
@@ -28,6 +29,16 @@ public class AppController {
     @GetMapping("/bob")
     public List<Users> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @GetMapping("/checkemail/{email}")
+    public boolean checkEmailExists(@PathVariable("email") String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @GetMapping("/checkusername/{username}")
+    public boolean checkUsernameExists(@PathVariable("username") String username) {
+        return userRepository.existsByUsername(username);
     }
 
     @GetMapping("/getrec")
@@ -92,10 +103,4 @@ public class AppController {
 
         return recipe;
     }
-
-    @GetMapping("/getrec/{recipe_ID}")
-    public Recipe getRecipeById(@PathVariable("recipe_ID") Integer recipe_ID) {
-        return recetteRepository.findById(recipe_ID).orElse(null);
-    }
-
 }
