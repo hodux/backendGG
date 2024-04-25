@@ -102,5 +102,14 @@ public class AppController {
         recetteRepository.save(recipe);
 
         return recipe;
+        }
+
+        @GetMapping("/getrecc/{calories}/{isvegan}")
+        public List<Recipe> getAllRecette(@PathVariable Integer calories, @PathVariable Boolean isvegan) {
+            return recetteRepository.findByCaloriesAndIsVegan(calories, isvegan);
+        }
+
     }
-}
+
+
+
