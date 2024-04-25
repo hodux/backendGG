@@ -41,6 +41,11 @@ public class AppController {
         return userRepository.existsByUsername(username);
     }
 
+    @GetMapping("/getrec/{recipe_ID}")
+    public Recipe getRecipeById(@PathVariable("recipe_ID") Integer recipe_ID) {
+        return recetteRepository.findById(recipe_ID).orElse(null);
+    }
+
     @GetMapping("/getrec")
     public List<Recipe> getAllRecette() {
         return recetteRepository.findAll();
