@@ -104,9 +104,9 @@ public class AppController {
         return recipe;
         }
 
-        @GetMapping("/getrecc/{calories}/{isvegan}")
-        public List<Recipe> getAllRecette(@PathVariable Integer calories, @PathVariable Boolean isvegan) {
-            return recetteRepository.findByCaloriesAndIsVegan(calories, isvegan);
+        @GetMapping("/getrecc/{calories}/{isvegan}/{isvegetarian}/{time}")
+        public List<Recipe> getQueryRecette(@PathVariable Integer calories, @PathVariable Boolean isvegan, @PathVariable Boolean isvegetarian, @PathVariable String time) {
+            return recetteRepository.findByCaloriesAndIsVeganAndIsVegetarianAndPreparationTime(calories, isvegan, isvegetarian, time);
         }
 
     }
