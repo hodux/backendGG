@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3333")
@@ -20,13 +19,13 @@ public class AppController {
     @Autowired
     RecetteRepository recetteRepository;
 
-    @PostMapping("/crc")
+    @PostMapping("/addUser")
     public Users user(@RequestBody Users users) {
         userRepository.save(users);
         return users;
     }
 
-    @GetMapping("/bob")
+    @GetMapping("/users")
     public List<Users> getAllUsers() {
         return userRepository.findAll();
     }
@@ -41,23 +40,23 @@ public class AppController {
         return userRepository.existsByUsername(username);
     }
 
-    @GetMapping("/getrec/{recipe_ID}")
+    @GetMapping("/recettes/{recipe_ID}")
     public Recipe getRecipeById(@PathVariable("recipe_ID") Integer recipe_ID) {
         return recetteRepository.findById(recipe_ID).orElse(null);
     }
 
-    @GetMapping("/getrec")
+    @GetMapping("/recettes")
     public List<Recipe> getAllRecette() {
         return recetteRepository.findAll();
     }
 
-    @PostMapping("/postrec")
+    @PostMapping("/addRecette")
     public Recipe recette(@RequestBody Recipe recipe) {
         recetteRepository.save(recipe);
         return recipe;
     }
 
-    @DeleteMapping("/bob/delete/{id}")
+    @DeleteMapping("/users/delete/{id}")
     public boolean deleteClientById(@PathVariable("id") int id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
@@ -67,7 +66,7 @@ public class AppController {
         }
     }
 
-    @PutMapping("/bob/update/{id}")
+    @PutMapping("/users/update/{id}")
     public Users updateClientById(@PathVariable("id") int id, @RequestBody Users updatedClient) {
         Users users = userRepository.findById(id).orElse(null);
 
@@ -81,7 +80,7 @@ public class AppController {
         return users;
     }
 
-    @DeleteMapping("/getrec/delete/{id}")
+    @DeleteMapping("/recettes/delete/{id}")
     public boolean deleteRecetteById(@PathVariable("id") int id) {
         if (recetteRepository.existsById(id)) {
             recetteRepository.deleteById(id);
@@ -91,7 +90,7 @@ public class AppController {
         }
     }
 
-    @PutMapping("/getrec/update/{id}")
+    @PutMapping("/recettes/update/{id}")
     public Recipe updateRecetteById(@PathVariable("id") int id, @RequestBody Recipe updatedRecipe) {
         Recipe recipe = recetteRepository.findById(id).orElse(null);
 
