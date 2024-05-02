@@ -1,0 +1,148 @@
+package com.example.backend.controller;
+
+import com.example.backend.model.Recipe;
+import com.example.backend.model.Users;
+import com.example.backend.repositories.RecetteRepository;
+import com.example.backend.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@CrossOrigin(origins = "http://localhost:3333")
+public class AppController {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RecetteRepository recetteRepository;
+
+    @PostMapping("/addUser")
+    public Users user(@RequestBody Users users) {
+        userRepository.save(users);
+        return users;
+    }
+
+    @GetMapping("/users")
+    public List<Users> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @GetMapping("/findUserByEmailOrUsername/{emailOrUsername}")
+    public Users findUserByEmailOrUsername(@PathVariable("emailOrUsername") String emailOrUsername) {
+        return userRepository.findUsersByEmailOrUsername(emailOrUsername,emailOrUsername);
+    }
+
+
+    @GetMapping("/checkuser/{usernameOrEmail}/{password}")
+    public boolean checkUserExists(@PathVariable("usernameOrEmail") String usernameOrEmail, @PathVariable("password") String password) {
+        return userRepository.existsByEmailAndAndPasswd(usernameOrEmail, password) || userRepository.existsByUsernameAndAndPasswd(usernameOrEmail, password);
+    }
+
+
+
+
+    @GetMapping("/checkemail/{email}")
+    public boolean checkEmailExists(@PathVariable("email") String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @GetMapping("/checkusername/{username}")
+    public boolean checkUsernameExists(@PathVariable("username") String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @GetMapping("/recettes/{recipe_ID}")
+    public Recipe getRecipeById(@PathVariable("recipe_ID") Integer recipe_ID) {
+        return recetteRepository.findById(recipe_ID).orElse(null);
+    }
+
+    @GetMapping("/recettes")
+    public List<Recipe> getAllRecette() {
+        return recetteRepository.findAll();
+    }
+
+    @PostMapping("/addRecette")
+    public Recipe recette(@RequestBody Recipe recipe) {
+        recetteRepository.save(recipe);
+        return recipe;
+    }
+
+    @DeleteMapping("/users/delete/{id}")
+    public boolean deleteClientById(@PathVariable("id") int id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PutMapping("/users/update/{id}")
+    public Users updateClientById(@PathVariable("id") int id, @RequestBody Users updatedClient) {
+        Users users = userRepository.findById(id).orElse(null);
+
+        users.setFirst_name(updatedClient.getFirst_name());
+        users.setLast_name(updatedClient.getLast_name());
+        users.setUsername(updatedClient.getUsername());
+        users.setPasswd(updatedClient.getPasswd());
+        users.setEmail(updatedClient.getEmail());
+        userRepository.save(users);
+
+        return users;
+    }
+
+    @DeleteMapping("/recettes/delete/{id}")
+    public boolean deleteRecetteById(@PathVariable("id") int id) {
+        if (recetteRepository.existsById(id)) {
+            recetteRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PutMapping("/recettes/update/{id}")
+    public Recipe updateRecetteById(@PathVariable("id") int id, @RequestBody Recipe updatedRecipe) {
+        Recipe recipe = recetteRepository.findById(id).orElse(null);
+
+        recipe.setRecipe_name(updatedRecipe.getRecipe_name());
+        recipe.setCalories(updatedRecipe.getCalories());
+        recipe.setDescriptions(updatedRecipe.getDescriptions());
+        recipe.setIngredients(updatedRecipe.getIngredients());
+        recipe.setIsVegan(updatedRecipe.getIsVegan());
+        recipe.setIsVegetarian(updatedRecipe.getIsVegetarian());
+        recipe.setInstructions(updatedRecipe.getInstructions());
+        recipe.setImg(updatedRecipe.getImg());
+        recipe.setPreparationTime(updatedRecipe.getPreparationTime());
+        recetteRepository.save(recipe);
+
+        return recipe;
+        }
+
+        @GetMapping("/getrecgreat/{calories}/{isvegan}/{isvegetarian}")
+        public List<Recipe> getQueryRecetteGreat(@PathVariable Integer calories, @PathVariable Boolean isvegan, @PathVariable Boolean isvegetarian) {
+            return recetteRepository.findByCaloriesGreaterThanEqualAndIsVeganAndIsVegetarian(calories, isvegan, isvegetarian);
+        }
+
+        @GetMapping("/getrecless/{calories}/{isvegan}/{isvegetarian}")
+        public List<Recipe> getQueryRecetteLess(@PathVariable Integer calories, @PathVariable Boolean isvegan, @PathVariable Boolean isvegetarian) {
+            return recetteRepository.findByCaloriesLessThanEqualAndIsVeganAndIsVegetarian(calories, isvegan, isvegetarian);
+        }
+
+        @GetMapping("/getrecgreatnopref/{calories}")
+        public List<Recipe> getQueryRecetteGreatNoPref(@PathVariable Integer calories) {
+            return recetteRepository.findByCaloriesGreaterThanEqual(calories);
+        }
+
+        @GetMapping("/getreclessnopref/{calories}")
+        public List<Recipe> getQueryRecetteLessNoPref(@PathVariable Integer calories) {
+            return recetteRepository.findByCaloriesLessThanEqual(calories);
+        }
+
+    }
+
+
+
