@@ -120,5 +120,29 @@ public class AppController {
         recetteRepository.save(recipe);
 
         return recipe;
+        }
+
+        @GetMapping("/getrecgreat/{calories}/{isvegan}/{isvegetarian}")
+        public List<Recipe> getQueryRecetteGreat(@PathVariable Integer calories, @PathVariable Boolean isvegan, @PathVariable Boolean isvegetarian) {
+            return recetteRepository.findByCaloriesGreaterThanEqualAndIsVeganAndIsVegetarian(calories, isvegan, isvegetarian);
+        }
+
+        @GetMapping("/getrecless/{calories}/{isvegan}/{isvegetarian}")
+        public List<Recipe> getQueryRecetteLess(@PathVariable Integer calories, @PathVariable Boolean isvegan, @PathVariable Boolean isvegetarian) {
+            return recetteRepository.findByCaloriesLessThanEqualAndIsVeganAndIsVegetarian(calories, isvegan, isvegetarian);
+        }
+
+        @GetMapping("/getrecgreatnopref/{calories}")
+        public List<Recipe> getQueryRecetteGreatNoPref(@PathVariable Integer calories) {
+            return recetteRepository.findByCaloriesGreaterThanEqual(calories);
+        }
+
+        @GetMapping("/getreclessnopref/{calories}")
+        public List<Recipe> getQueryRecetteLessNoPref(@PathVariable Integer calories) {
+            return recetteRepository.findByCaloriesLessThanEqual(calories);
+        }
+
     }
-}
+
+
+
