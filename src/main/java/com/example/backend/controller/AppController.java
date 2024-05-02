@@ -30,6 +30,20 @@ public class AppController {
         return userRepository.findAll();
     }
 
+    @GetMapping("/findUserByEmailOrUsername/{emailOrUsername}")
+    public Users findUserByEmailOrUsername(@PathVariable("emailOrUsername") String emailOrUsername) {
+        return userRepository.findUsersByEmailOrUsername(emailOrUsername,emailOrUsername);
+    }
+
+
+    @GetMapping("/checkuser/{usernameOrEmail}/{password}")
+    public boolean checkUserExists(@PathVariable("usernameOrEmail") String usernameOrEmail, @PathVariable("password") String password) {
+        return userRepository.existsByEmailAndAndPasswd(usernameOrEmail, password) || userRepository.existsByUsernameAndAndPasswd(usernameOrEmail, password);
+    }
+
+
+
+
     @GetMapping("/checkemail/{email}")
     public boolean checkEmailExists(@PathVariable("email") String email) {
         return userRepository.existsByEmail(email);
