@@ -104,9 +104,24 @@ public class AppController {
         return recipe;
         }
 
-        @GetMapping("/getrecc/{calories}/{isvegan}/{isvegetarian}/{time}")
-        public List<Recipe> getQueryRecette(@PathVariable Integer calories, @PathVariable Boolean isvegan, @PathVariable Boolean isvegetarian, @PathVariable String time) {
-            return recetteRepository.findByCaloriesAndIsVeganAndIsVegetarianAndPreparationTime(calories, isvegan, isvegetarian, time);
+        @GetMapping("/getrecgreat/{calories}/{isvegan}/{isvegetarian}")
+        public List<Recipe> getQueryRecetteGreat(@PathVariable Integer calories, @PathVariable Boolean isvegan, @PathVariable Boolean isvegetarian) {
+            return recetteRepository.findByCaloriesGreaterThanEqualAndIsVeganAndIsVegetarian(calories, isvegan, isvegetarian);
+        }
+
+        @GetMapping("/getrecless/{calories}/{isvegan}/{isvegetarian}")
+        public List<Recipe> getQueryRecetteLess(@PathVariable Integer calories, @PathVariable Boolean isvegan, @PathVariable Boolean isvegetarian) {
+            return recetteRepository.findByCaloriesLessThanEqualAndIsVeganAndIsVegetarian(calories, isvegan, isvegetarian);
+        }
+
+        @GetMapping("/getrecgreatnopref/{calories}")
+        public List<Recipe> getQueryRecetteGreatNoPref(@PathVariable Integer calories) {
+            return recetteRepository.findByCaloriesGreaterThanEqual(calories);
+        }
+
+        @GetMapping("/getreclessnopref/{calories}")
+        public List<Recipe> getQueryRecetteLessNoPref(@PathVariable Integer calories) {
+            return recetteRepository.findByCaloriesLessThanEqual(calories);
         }
 
     }
